@@ -1,0 +1,26 @@
+# AIME evaluation config for Qwen3 models
+# Paper: "AIME-120 (120 problems from AIME 2022–2025)"
+#        temperature=0.6, top_p=0.95, max_tokens=32768, averaged over 3 seeds
+#
+# NOTE: evalscope ships aime24 (AIME 2024 I+II, 30 problems) and
+#       aime25 (AIME 2025 I+II, 30 problems).
+#       For the full AIME-120 (2022–2025), you would also need aime22/aime23
+#       datasets which are not yet in evalscope. Add them here once available.
+#
+# Runtime overrides (set by generate_vllm_eval_tsubame_scripts.py):
+#   model, model_id, api_url, dataset_dir, work_dir,
+#   generation_config.seed, generation_config.max_tokens
+
+datasets:
+  - aime24   # AIME 2024 I+II (30 problems)
+  - aime25   # AIME 2025 I+II (30 problems)
+
+dataset_hub: modelscope   # evalscope/aime24, evalscope/aime25
+
+generation_config:
+  temperature: 0.6
+  top_p: 0.95
+  max_tokens: 32768
+
+eval_batch_size: 32       # AIME needs long reasoning chains
+no_timestamp: true

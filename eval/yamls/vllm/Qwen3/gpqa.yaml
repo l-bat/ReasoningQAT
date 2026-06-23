@@ -1,0 +1,21 @@
+# GPQA-Diamond evaluation config for Qwen3 models
+# Paper: temperature=0.6, top_p=0.95, max_tokens=32768, averaged over 3 seeds
+#
+# Dataset: AI-ModelScope/gpqa_diamond (198 graduate-level science MCQs)
+#
+# Runtime overrides (set by generate_vllm_eval_tsubame_scripts.py):
+#   model, model_id, api_url, dataset_dir, work_dir,
+#   generation_config.seed, generation_config.max_tokens
+
+datasets:
+  - gpqa_diamond
+
+dataset_hub: modelscope   # AI-ModelScope/gpqa_diamond
+
+generation_config:
+  temperature: 0.6
+  top_p: 0.95
+  max_tokens: 32768
+
+eval_batch_size: 64
+no_timestamp: true
