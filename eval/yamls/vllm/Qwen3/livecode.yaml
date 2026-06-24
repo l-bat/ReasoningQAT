@@ -1,0 +1,27 @@
+# LiveCodeBench evaluation config for Qwen3 models
+# Paper: temperature=0.6, top_p=0.95, max_tokens=32768, averaged over 3 seeds
+#
+# Dataset: evalscope/livecodebench_code_generation_lite_parquet
+# Using release_latest subset for most recent problems.
+#
+# Runtime overrides (set by generate_vllm_eval_tsubame_scripts.py):
+#   model, model_id, api_url, dataset_dir, work_dir,
+#   generation_config.seed, generation_config.max_tokens
+
+datasets:
+  - live_code_bench
+
+dataset_args:
+  live_code_bench:
+    subset_list:
+      - release_latest   # most recent problems; change to release_v4 for a fixed snapshot
+
+dataset_hub: modelscope   # evalscope/livecodebench_code_generation_lite_parquet
+
+generation_config:
+  temperature: 0.6
+  top_p: 0.95
+  max_tokens: 32768
+
+eval_batch_size: 32       # code generation needs more tokens per sample
+no_timestamp: true

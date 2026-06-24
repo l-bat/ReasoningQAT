@@ -1,0 +1,19 @@
+# GSM8K evaluation config for Qwen3 models
+# Paper: temperature=0.6, top_p=0.95, max_tokens=32768, averaged over 3 seeds
+#
+# Runtime overrides (set by generate_vllm_eval_tsubame_scripts.py):
+#   model, model_id, api_url, dataset_dir, work_dir,
+#   generation_config.seed, generation_config.max_tokens
+
+datasets:
+  - gsm8k
+
+dataset_hub: modelscope   # AI-ModelScope/gsm8k
+
+generation_config:
+  temperature: 0.6
+  top_p: 0.95
+  max_tokens: 32768
+
+eval_batch_size: 64
+no_timestamp: true        # keep work_dir path exact as passed by CLI

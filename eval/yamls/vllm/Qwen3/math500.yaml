@@ -1,0 +1,21 @@
+# MATH-500 evaluation config for Qwen3 models
+# Paper: temperature=0.6, top_p=0.95, max_tokens=32768, averaged over 3 seeds
+#
+# Dataset: AI-ModelScope/MATH-500 (500 problems, difficulty Levels 1-5)
+#
+# Runtime overrides (set by generate_vllm_eval_tsubame_scripts.py):
+#   model, model_id, api_url, dataset_dir, work_dir,
+#   generation_config.seed, generation_config.max_tokens
+
+datasets:
+  - math_500
+
+dataset_hub: modelscope   # AI-ModelScope/MATH-500
+
+generation_config:
+  temperature: 0.6
+  top_p: 0.95
+  max_tokens: 32768
+
+eval_batch_size: 64
+no_timestamp: true
