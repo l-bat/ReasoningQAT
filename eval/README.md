@@ -78,6 +78,40 @@ CUDA_VISIBLE_DEVICES=0,1,2 VLLM_USE_FLASHINFER_SAMPLER=0 \
 
 > `--dtype bfloat16` is recommended for fp32 checkpoints to halve GPU memory usage.
 
+### Stripped NNCF checkpoint
+
+NNCF QAT checkpoints saved via [save_stripped.py](https://github.com/l-bat/nncf/blob/lt/3bit_equalization/examples/llm_compression/torch/distillation_qat_with_lora/save_stripped.py) are standard HF-format safetensors files.
+
+**Step 1 — start the server**:
+
+```bash
+export MODEL_PATH="/path/to/stripped_nncf_checkpoint"
+export MODEL_NAME="stripped_nncf_checkpoint"   # short name, alphanumeric/-/_/. only
+
+CUDA_VISIBLE_DEVICES=0,1,2 VLLM_USE_FLASHINFER_SAMPLER=0 \
+  vllm serve "$MODEL_PATH" \
+  --served-model-name "$MODEL_NAME" \
+  --trust-remote-code \
+  --port 8000 \
+  --max-model-len 40960 \
+  --gpu-memory-utilization 0.9 \
+  --dtype bfloat16 \
+  --data-parallel-size 3
+```
+
+**Step 2 — run evaluation** (use `$MODEL_NAME` for both `--model` and `--model-id`):
+
+```bash
+python eval/evalscope_vllm.py eval/yamls/vllm/Qwen3/gsm8k.yaml \
+  --model "$MODEL_NAME" \
+  --model-id "$MODEL_NAME" \
+  --api-url "http://127.0.0.1:8000/v1/chat/completions" \
+  --work-dir "eval/results/${MODEL_NAME}/gsm8k_32k" \
+  --generation-config '{"seed": 42, "max_tokens": 32768}'
+```
+
+Results will be saved under `eval/results/<MODEL_NAME>/`.
+
 ### Verify the server is ready
 
 ```bash
